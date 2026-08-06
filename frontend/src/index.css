@@ -1,0 +1,51 @@
+/* Base reset and font smoothing */
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; }
+body { margin: 0; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+/* Ensure background from App.css fills */
+#root { background: transparent; }
+.auth-card{
+    width:420px;
+    padding:35px;
+}
+
+.auth-input{
+    width:100%;
+    padding:14px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    font-size:15px;
+    transition:.3s;
+}
+
+.auth-input:focus{
+    outline:none;
+    border-color:#7c3aed;
+    box-shadow:0 0 0 4px rgba(124,58,237,.15);
+}
+
+.auth-title{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.auth-icon{
+    font-size:55px;
+    margin-bottom:10px;
+}
+
+.auth-footer{
+    margin-top:25px;
+    text-align:center;
+}
+
+.auth-link{
+    text-decoration:none;
+    color:#7c3aed;
+    font-weight:bold;
+}
+
+.auth-link:hover{
+    text-decoration:underline;
+}
