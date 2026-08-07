@@ -60,24 +60,26 @@ def verify_token(token):
             detail="Invalid Token"
         )
 
-from fastapi.security import OAuth2PasswordBearer
+from fastapi.security import OAuth2PasswordBearer,HTTPBearer, HTTPAuthorizationCredentials
 
 oauth2_scheme=OAuth2PasswordBearer(
     tokenUrl="login"
 )
 
-from fastapi import Depends
+from fastapi import Depends, HTTPException
 from sqlalchemy.orm import Session
 from database import session, get_db
 from models.database_models import User
 
 
 
+http_bearer = HTTPBearer()
+
 def get_current_user(
-    token: str = Depends(oauth2_scheme),
+    credentials: HTTPAuthorizationCredentials = Depends(http_bearer),
     db: Session = Depends(get_db)
 ):
-
+    token = credentials.credentials
     email = verify_token(token)
 
     user = db.query(User).filter(
