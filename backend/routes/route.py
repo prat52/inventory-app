@@ -1,0 +1,51 @@
+
+from auth import verify_password, create_access_token, hash_password
+from models.schemas import UserLogin, UserRegister
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
+from database import get_db
+from models import database_models
+
+router = APIRouter()  # Changed from app = FastAPI()
+
+@router.post("/login")
+def login(user: UserLogin, db: Session = Depends(get_db)):
+
+    db_user = db.query(database_models.User).filter(
+        database_models.User.email == user.email
+    ).first()
+
+    if db_user is None:
+        raise HTTPException(status_code=401, detail="Invalid Email")
+
+    if not verify_password(user.password, db_user.password):
+        raise HTTPException(status_code=401, detail="Wrong Password")
+
+    token = create_access_token(
+        data={"sub": db_user.email}
+    )
+
+    return {
+        "access_token": token,
+        "token_type": "bearer"
+    }
+
+@router.post("/register")
+def register(user: UserRegister, db: Session = Depends(get_db)):
+
+    existing = db.query(database_models.User).filter(
+        database_models.User.email == user.email
+    ).first()
+
+    if existing:
+        raise HTTPException(status_code=400, detail="User already exists")
+
+    db_user = database_models.User(
+        email=user.email,
+        password=hash_password(user.password)
+    )
+
+    db.add(db_user)
+    db.commit()
+
+    return {"message": "Registration Successful"}
