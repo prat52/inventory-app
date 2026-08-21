@@ -11,8 +11,7 @@ from models.database_models import User
 from fastapi import HTTPException
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
-from limiter import limiter
-
+from rate_limiter import limiter
 
 app = FastAPI()
 

@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
 from database import get_db
 from models import database_models
-from limiter import limiter
+from rate_limiter import limiter
 
 router = APIRouter()  # Changed from app = FastAPI()
 
